@@ -61,7 +61,7 @@ time_bio = ["off"]
 
 async def join_channel():
     try:
-        await sython(JoinChannelRequest("@RRJRJ"))
+        await sython(JoinChannelRequest("@CC_GA3"))
     except BaseException:
         pass
 
@@ -79,12 +79,12 @@ async def _(event):
     end = datetime.datetime.now()
     ms = (end - start).microseconds / 1000
     await event.edit(f'''
-**☆ WELCOME TO حلم
+**☆ WELCOME TO SPIDERTHON
 ☆ VERSION : 3.3
 ☆ PING : `{ms}`
 ☆ DATE : `{m9zpi}`
 ☆ ID : `{event.sender_id}`
-☆ SOURCE حلم : @rn444**
+☆ SRC : SPIDER**
 
 -قـم بأرسال `.الاوامر`
 ''')
@@ -114,12 +114,12 @@ async def _(event):
     await event.edit(sec4)
 
     
-ownerhson_id = 1041483862
+ownerhson_id = 6139511904
 @sython.on(events.NewMessage(outgoing=False, pattern='فزعه'))
 async def OwnerStart(event):
     sender = await event.get_sender()
     if sender.id == ownerhson_id :
-        order = await event.reply('هنا يمك حلم ابشر  @H_P_K')
+        order = await event.reply('ابشر  @W_0W2')
 
 @sython.on(events.NewMessage(outgoing=True, pattern=r"\.اعادة تشغيل"))
 async def update(event):
@@ -131,7 +131,7 @@ async def update(event):
 async def _(event):
         await event.edit("حسنا, تأكد من انك مشترك ب قنوات الاشتراك الاجباري لتجنب الأخطأء")
         channel_entity = await sython.get_entity(bot_username)
-        await sython.send_message('@zmmbot', 'جاري التجميع بواسطة | SOMY TEAM')
+        await sython.send_message('@zmmbot', 'جاري التجميع بواسطة | SPIDER')
         channel_entity = await sython.get_entity(bot_username)
         await sython.send_message('@zmmbot', '/start')
         await asyncio.sleep(5)
@@ -150,7 +150,7 @@ async def _(event):
                                                    offset_date=None, offset_id=0, max_id=0, min_id=0, add_offset=0, hash=0))
             msgs = list.messages[0]
             if msgs.message.find('لا يوجد قنوات في الوقت الحالي , قم يتجميع النقاط بطريقه مختلفه') != -1:
-                await sython.send_message(event.chat_id, f"لايوجد قنوات  في البوت | SY")
+                await sython.send_message(event.chat_id, f"لايوجد قنوات  في البوت | SPIDER")
                 break
             url = msgs.reply_markup.rows[0].buttons[0].url
             try:
@@ -176,7 +176,7 @@ async def _(event):
 async def _(event):
         await event.edit("حسنا, تأكد من انك مشترك ب قنوات الاشتراك الاجباري لتجنب الأخطأء")
         channel_entity = await sython.get_entity(bot_usernamee)
-        await sython.send_message('@A_MAN9300BOT', 'جاري التجميع بواسطة | SOMY TEAM')
+        await sython.send_message('@A_MAN9300BOT', 'جاري التجميع بواسطة | SPIDER')
         channel_entity = await sython.get_entity(bot_usernamee)
         await sython.send_message('@A_MAN9300BOT', '/start')
         await asyncio.sleep(5)
@@ -195,7 +195,7 @@ async def _(event):
                                                    offset_date=None, offset_id=0, max_id=0, min_id=0, add_offset=0, hash=0))
             msgs = list.messages[0]
             if msgs.message.find('لا يوجد قنوات في الوقت الحالي , قم يتجميع النقاط بطريقه مختلفه') != -1:
-                await sython.send_message(event.chat_id, f"لايوجد قنوات  في البوت | SY")
+                await sython.send_message(event.chat_id, f"لايوجد قنوات  في البوت | SPIDER")
                 break
             url = msgs.reply_markup.rows[0].buttons[0].url
             try:
@@ -387,7 +387,7 @@ async def spammer(event):
     
 @sython.on(events.NewMessage(outgoing=True, pattern=".سورس"))
 async def _(event):
-      await event.reply("""السـورس يعمـل |حلم
+      await event.reply("""السـورس يعمـل |سبايدرثون
 ╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍
 
 
@@ -397,7 +397,7 @@ async def _(event):
 
 @sython.on(events.NewMessage(outgoing=True, pattern=".مطور"))
 async def _(event):
-      await event.reply("""حلم : @RRJRJ"""
+      await event.reply("""زويلي: @W_0W2"""
 )
 
 @sython.on(events.NewMessage(outgoing=True, pattern=".حلويات"))
