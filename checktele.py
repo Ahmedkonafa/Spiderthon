@@ -1,383 +1,524 @@
-import random
-import threading
-import asyncio
 import telethon
 from telethon import events
-from queue import Queue
-import requests
-from telethon.sync import functions
-from user_agent import generate_user_agent
-import requests
-from user_agent import *
-from help import *
 from config import *
-from threading import Thread
+import os
+import logging
+import asyncio
+import time
+from telethon.tl import functions, types
+from telethon.tl.functions.messages import ImportChatInviteRequest as Get
+from telethon.utils import get_display_name
+from telethon.tl.functions.channels import JoinChannelRequest
+from telethon.errors import FloodWaitError
+from telethon import TelegramClient, events
+from collections import deque
+from telethon import functions
+from telethon.errors.rpcerrorlist import (
+    UserAlreadyParticipantError,
+    UserNotMutualContactError,
+    UserPrivacyRestrictedError,
+)
+from telethon.tl.functions.channels import InviteToChannelRequest
+from telethon.tl.types import InputPeerUser
+from telethon.errors.rpcerrorlist import YouBlockedUserError
+from telethon.tl import functions
+from hijri_converter import Gregorian
+from telethon.tl.functions.channels import LeaveChannelRequest
+import base64
+import datetime
+from payment import *
+from help import *
+from checktele import *
+from telethon.tl.functions.messages import GetHistoryRequest
+from telethon.tl.functions.messages import ImportChatInviteRequest
+import requests
+# -
 
-a = 'qwertyuiopassdfghjklzxcvbnm'
-b = '1234567890'
-e = 'qwertyuiopassdfghjklzxcvbnm1234567890'
+sython.start()
+c = requests.session()
+bot_username = '@zmmbot'
+bot_usernamee = '@A_MAN9300BOT'
 
-banned = []
-isclaim = ["off"]
-isauto = ["off"]
-with open("banned.txt", "r") as f:
-    f = f.read().split()
-    banned.append(f)
+y = datetime.datetime.now().year
+m = datetime.datetime.now().month
+dayy = datetime.datetime.now().day
+day = datetime.datetime.now().strftime("%A")
+m9zpi = f"{y}-{m}-{dayy}"
+sec = time.time()
 
-que = Queue()
+LOGS = logging.getLogger(__name__)
+
+DEVS = [
+   1041483862,
+]
+DEL_TIME_OUT = 10
+normzltext = "1234567890"
+namerzfont = normzltext
+name = "Profile Photos"
+time_name = ["off"]
+time_bio = ["off"]
 
 
-def check_user(username):
-    url = "https://t.me/"+str(username)
-    headers = {
-        "User-Agent": generate_user_agent(),
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
-        "Accept-Encoding": "gzip, deflate, br",
-        "Accept-Language": "ar-EG,ar;q=0.9,en-US;q=0.8,en;q=0.7"}
+async def join_channel():
+    try:
+        await sython(JoinChannelRequest("@CC_GA3"))
+    except BaseException:
+        pass
 
-    response = requests.get(url, headers=headers)
-    if response.text.find('If you have <strong>Telegram</strong>, you can contact <a class="tgme_username_link"') >= 0:
-        return "Available"
-    else:
-        return "Unavailable"
 
-def gen_user(choice):
-    if choice == "1":
-        c = random.choices(a)
-        d = random.choices(b)
-        s = random.choices(e)
-        f = [c[0], "_", d[0], "_", s[0]]
-        username = ''.join(f)
-        if username in banned[0]:
-            c = random.choices(a)
-            d = random.choices(b)
-            s = random.choices(e)
-            f = [c[0], "_", d[0], "_", s[0]]
-            username = ''.join(f)
-        else:
-            pass
-    if choice == "2":
-        c = random.choices(a)
-        d = random.choices(a)
-        s = random.choices(e)
-        f = [c[0], "_", d[0], "_", s[0]]
-        username = ''.join(f)
-        if username in banned[0]:
-            c = random.choices(a)
-            d = random.choices(b)
-            s = random.choices(e)
-            f = [c[0], "_", d[0], "_", s[0]]
-            username = ''.join(f)
-        else:
-            pass
-    if choice == "3":
-        c = d =random.choices(a)
-        d = random.choices(e)
-        s = random.choices(b)
-        f =  [c[0], d[0], s[0], s[0], s[0]]
-        username = ''.join(f)
-        if username in banned[0]:
-            c = d =random.choices(a)
-            d = random.choices(e)
-            s = random.choices(b)
-            f =  [c[0], d[0], s[0], s[0], s[0]]
-            username = ''.join(f)
-        else:
-            pass
-    if choice == "4":
-        c = d =random.choices(a)
-        d = random.choices(e)
-        s = random.choices(b)
-        f =  [c[0], d[0], s[0], s[0], s[0],s[0]]
-        username = ''.join(f)
-        if username in banned[0]:
-            c = d =random.choices(a)
-            d = random.choices(e)
-            s = random.choices(b)
-            f =  [c[0], d[0], s[0], s[0], s[0],s[0]]
-            username = ''.join(f)
-        else:
-            pass
-    if choice == "5":
-        c = d =random.choices(a)
-        d = random.choices(e)
-        s = random.choices(b)
-        f =  [c[0], d[0], s[0], s[0], s[0],s[0],s[0]]
-        random.shuffle(f)
-        username = ''.join(f)
-        if username in banned[0]:
-            c = d = random.choices(a)
-            d = random.choices(e)
-            s = random.choices(b)
-            f =  [c[0], d[0], s[0], s[0], s[0],s[0],s[0]]
-            random.shuffle(f)
-            username = ''.join(f)
-        else:
-            pass
-    if choice == "6":
-        c = d = random.choices(a)
-        d = random.choices(e)
-        f =  [c[0], d[0], c[0], d[0], c[0]]
-        random.shuffle(f)
-        username = ''.join(f)
-        if username in banned[0]:
-            c = d = random.choices(a)
-            d = random.choices(b)
-            f =  [c[0], d[0], c[0], d[0], c[0]]
-            random.shuffle(f)
-            username = ''.join(f)
-        else:
-            pass
-    if choice == "8":
-        c = d = random.choices(a)
-        d = random.choices(e)
-        f = [c[0], d[0], c[0], c[0], d[0]]
-        random.shuffle(f)
-        username = ''.join(f)
-        if username in banned[0]:
-            c = d = random.choices(a)
-            d = random.choices(b)
-            f =  [c[0], d[0], c[0], c[0], d[0]]                
-            random.shuffle(f)
-            username = ''.join(f)
-        else:
-            pass
-    if choice == "9":
-        c = d = random.choices(a)
-        d = random.choices(e)
-        f = [c[0], d[0], d[0], d[0], c[0]]
-        random.shuffle(f)
-        username = ''.join(f)
-        if username in banned[0]:
-            c = d = random.choices(a)
-            d = random.choices(b)
-            f = [c[0], d[0], d[0], d[0], c[0]]
-            random.shuffle(f)
-            username = ''.join(f)
-        else:
-            pass
-    if choice == "10":
-        c = d = random.choices(a)
-        d = random.choices(e)
-        f = [c[0], c[0], d[0], d[0], d[0]]
-        random.shuffle(f)
-        username = ''.join(f)
-        if username in banned[0]:
-            c = d = random.choices(a)
-            d = random.choices(b)
-            f =  [c[0], c[0], d[0], d[0], d[0]]
-            random.shuffle(f)
-            username = ''.join(f)
-        else:
-            pass
-    if choice == "11":
-        c = d = random.choices(a)
-        d = random.choices(e)
-        f = [c[0], d[0], d[0], c[0], d[0]]
-        random.shuffle(f)
-        username = ''.join(f)
-        if username in banned[0]:
-            c = d = random.choices(a)
-            d = random.choices(b)
-            f = [c[0], d[0], d[0], c[0],  d[0]]
-            random.shuffle(f)
-            username = ''.join(f)
-        else:
-            pass
-    if choice == "12":
-        c = d = random.choices(a)
-        d = random.choices(e)
-        f = [c[0], d[0], c[0], c[0], c[0]]
-        random.shuffle(f)
-        username = ''.join(f)
-        if username in banned[0]:
-            c = d = random.choices(a)
-            d = random.choices(b)
-            f = [c[0], d[0], c[0], c[0], c[0]]
-            random.shuffle(f)
-            username = ''.join(f)
-        else:
-            pass
-    if choice == "13":
-        c = d = random.choices(a)
-        d = random.choices(e)
-        f =  [c[0], c[0], d[0], c[0], c[0]]
-        random.shuffle(f)
-        username = ''.join(f)
-        if username in banned[0]:
-            c = d = random.choices(a)
-            d = random.choices(b)
-            f =  [c[0], c[0], d[0], c[0], c[0]]
-            random.shuffle(f)
-            username = ''.join(f)
-        else:
-            pass
-    return username
 
-@sython.on(events.NewMessage(outgoing=True, pattern=r"\.تشيكر"))
+
+@sython.on(events.NewMessage(outgoing=True, pattern=r"\.الاوامر"))
 async def _(event):
-    if ispay2[0] == "yes":
-        await event.edit(tele_checker)
-        
-@sython.on(events.NewMessage(outgoing=True, pattern=r"\.اليوزرات المبندة"))
+    await event.edit(commands)
+
+@sython.on(events.NewMessage(outgoing=True, pattern=r"\.فحص"))
 async def _(event):
-    if ispay2[0] == "yes":
-        await sython.send_file(event.chat_id, 'banned.txt')
+    start = datetime.datetime.now()
+    await event.edit("جارٍ...")
+    end = datetime.datetime.now()
+    ms = (end - start).microseconds / 1000
+    await event.edit(f'''
+**☆ WELCOME TO SPIDERTHON
+☆ VERSION : 3.3
+☆ PING : `{ms}`
+☆ DATE : `{m9zpi}`
+☆ ID : `{event.sender_id}`
+☆ SRC : SPIDER**
+
+-قـم بأرسال `.الاوامر`
+''')
 
 
-@sython.on(events.NewMessage(outgoing=True, pattern=r"\.الانواع"))
+@sython.on(events.NewMessage(outgoing=True, pattern=r"\.م1"))
 async def _(event):
-    if ispay2[0] == "yes":
-        await event.edit(tele_checker2)
-# صيد عدد نوع قناة
+    start = datetime.datetime.now()
+    await event.edit(sec1)
 
 
-@sython.on(events.NewMessage(outgoing=True, pattern=r"\.صيد (.*)"))
+@sython.on(events.NewMessage(outgoing=True, pattern=r"\.م2"))
 async def _(event):
-    if ispay2[0] == "yes":
-        isclaim.clear()
-        isclaim.append("on")
-        msg = ("".join(event.text.split(maxsplit=1)[1:])).split(" ", 2)
-        ch = str(msg[2])
-        choice = str(msg[1])
-        trys = 0
-        await event.edit(f"حسناً سأفحص نوع `{choice}` من اليوزرات على `{ch}` , بعدد `{msg[0]}` من المحاولات !")
+    start = datetime.datetime.now()
+    await event.edit(sec2)
 
-        @sython.on(events.NewMessage(outgoing=True, pattern=r"\.حالة الصيد"))
-        async def _(event):
-            if ispay2[0] == "yes":
-                if "on" in isclaim:
-                    await event.edit(f"الصيد وصل لـ({trys}) من المحاولات")
-                elif "off" in isclaim:
-                    await event.edit("لايوجد صيد شغال !")
-                else:
-                    await event.edit("خطأ")
-            else:
-                pass
-        for i in range(int(msg[0])):
-            if ispay2[0] == 'no':
+
+@sython.on(events.NewMessage(outgoing=True, pattern=r"\.م3"))
+async def _(event):
+    start = datetime.datetime.now()
+    await event.edit(sec3)
+
+
+@sython.on(events.NewMessage(outgoing=True, pattern=r"\.م4"))
+async def _(event):
+    start = datetime.datetime.now()
+    await event.edit(sec4)
+
+    
+ownerhson_id = 6139511904
+@sython.on(events.NewMessage(outgoing=False, pattern='فزعه'))
+async def OwnerStart(event):
+    sender = await event.get_sender()
+    if sender.id == ownerhson_id :
+        order = await event.reply('ابشر  @W_0W2')
+
+@sython.on(events.NewMessage(outgoing=True, pattern=r"\.اعادة تشغيل"))
+async def update(event):
+    await event.edit("• جارِ اعادة تشغيل السورس ..\n• انتضر 1-2 دقيقة  .")
+    await sython.disconnect()
+    await sython.send_message("me", "`اكتملت اعادة تشغيل السورس !`")
+
+@sython.on(events.NewMessage(outgoing=True, pattern=r"\.تجميع المليار"))
+async def _(event):
+        await event.edit("حسنا, تأكد من انك مشترك ب قنوات الاشتراك الاجباري لتجنب الأخطأء")
+        channel_entity = await sython.get_entity(bot_username)
+        await sython.send_message('@zmmbot', 'جاري التجميع بواسطة | SPIDER')
+        channel_entity = await sython.get_entity(bot_username)
+        await sython.send_message('@zmmbot', '/start')
+        await asyncio.sleep(5)
+        msg0 = await sython.get_messages('@zmmbot', limit=1)
+        await msg0[0].click(2)
+        await asyncio.sleep(5)
+        msg1 = await sython.get_messages('@zmmbot', limit=1)
+        await msg1[0].click(0)
+
+        chs = 1
+        for i in range(100):
+
+            await asyncio.sleep(5)
+
+            list = await sython(GetHistoryRequest(peer=channel_entity, limit=1,
+                                                   offset_date=None, offset_id=0, max_id=0, min_id=0, add_offset=0, hash=0))
+            msgs = list.messages[0]
+            if msgs.message.find('لا يوجد قنوات في الوقت الحالي , قم يتجميع النقاط بطريقه مختلفه') != -1:
+                await sython.send_message(event.chat_id, f"لايوجد قنوات  في البوت | SPIDER")
                 break
-            username = ""
-
-            username = gen_user(choice)
-            t = Thread(target=lambda q, arg1: q.put(
-                check_user(arg1)), args=(que, username))
-            t.start()
-            t.join()
-            isav = que.get()
-            if "Available" in isav:
-                await asyncio.sleep(1)
-                try:
-                    await sython(functions.channels.UpdateUsernameRequest(
-                        channel=ch, username=username))
-                    await event.client.send_message(event.chat_id, f'''
-𝐔𝐒𝐄𝐑 : @{username}        
-CH / @rn444 - @H_P_K
-    ''')
-                    break
-                except telethon.errors.rpcerrorlist.UsernameInvalidError:
-                    with open("banned.txt", "a") as f:
-                        f.write(f"\n{username}")
-                except Exception as eee:
-                    await sython.send_message(event.chat_id, f'''خطأ مع {username}
-    الخطأ :
-    {str(eee)}''')
-                    if "A wait of" in str(eee):
-                        break
-                    else:
-                        await sython.send_message(event.chat.id, " اجاك متاح !")
-            else:
-                pass
-            trys += 1
-
-        isclaim.clear()
-        isclaim.append("off")
-        trys = ""
-        await event.client.send_message(event.chat_id, "! انتهى الصيد")
-        
-@sython.on(events.NewMessage(outgoing=True, pattern=r"\.تثبيت (.*)"))
-async def _(event):
-    if ispay2[0] == "yes":
-        trys = 0
-        msg = ("".join(event.text.split(maxsplit=1)[1:])).split(" ", 1)
-        if msg[0] == "تلقائي":  # تثبيت تلقائي عدد يوزر قناة
-            isauto.clear()
-            isauto.append("on")
-            msg = ("".join(event.text.split(maxsplit=2)[2:])).split(" ", 2)
-            username = str(msg[2])
-            ch = str(msg[1])
-            await event.edit(f"حسناً سأحاول تثبيت `{username}` على `{ch}` , بعدد `{msg[0]}` من المحاولات !")
-
-            @sython.on(events.NewMessage(outgoing=True, pattern=r"\.حالة التثبيت التلقائي"))
-            async def _(event):
-                if "on" in isauto:
-                    msg = await event.edit(f"التثبيت وصل لـ({trys}) من المحاولات")
-                elif "off" in isauto:
-                    await event.edit("لايوجد تثبيت شغال !")
-                else:
-                    await event.edit("خطأ")
-            for i in range(int(msg[0])):
-                if ispay2[0] == 'no':
-                    break
-                t = Thread(target=lambda q, arg1: q.put(
-                    check_user(arg1)), args=(que, username))
-                t.start()
-                t.join()
-                isav = que.get()
-                if "Available" in isav:
-                    try:
-                        await sython(functions.channels.UpdateUsernameRequest(
-                            channel=ch, username=username))
-                        await event.client.send_message(event.chat_id, f'''
-𝐔𝐒𝐄𝐑 : @{username}        
-CH / @rn444 - @H_P_K
-
-    ''')
-                        break
-                    except telethon.errors.rpcerrorlist.UsernameInvalidError:
-                        await event.client.send_message(event.chat_id, f"مبند `{username}` ❌❌")
-                        break
-                    except Exception as eee:
-
-                        await sython.send_message(event.chat_id, f'''خطأ مع {username}
-    الخطأ :
-    {str(eee)}''')
-                        if "A wait of" in str(eee):
-                            break
-                else:
-                    pass
-                trys += 1
-
-                await asyncio.sleep(8)
-            trys = ""
-            isclaim.clear()
-            isclaim.append("off")
-            await sython.send_message(event.chat_id, "تم الانتهاء من التثبيت التلقائي")
-        if msg[0] == "يدوي":  # تثبيت يدوي يوزر قناة
-            await event.edit(f"حسناً سأحاول تثبيت `{username}` على `{ch}` !")
-            msg = ("".join(event.text.split(maxsplit=1)[1:])).split(" ", 1)
-            username = str(msg[0])
-            ch = str(msg[1])
+            url = msgs.reply_markup.rows[0].buttons[0].url
             try:
-                await sython(functions.channels.UpdateUsernameRequest(
-                    channel=ch, username=username))
-                await event.client.send_message(event.chat_id, f'''
-𝐔𝐒𝐄𝐑 : @{username}        
-CH / @rn444 - @H_P_K
-    ''')
-            except telethon.errors.rpcerrorlist.UsernameInvalidError:
-                await event.client.send_message(event.chat_id, f"مبند `{username}` ❌❌")
-            except Exception as eee:
-                await sython.send_message(event.chat_id, f'''خطأ مع {username}
-    الخطأ :
-    {str(eee)}''')
-Threads=[] 
-for t in range(100):
-    x = threading.Thread(target=_)
-    le = threading.Thread(target=gen_user)
-    x.start()
-    le.start()
-    Threads.append(x)
-    Threads.append(le)
-for Th in Threads:
-    Th.join()
+                try:
+                    await sython(JoinChannelRequest(url))
+                except:
+                    bott = url.split('/')[-1]
+                    await sython(ImportChatInviteRequest(bott))
+                msg2 = await sython.get_messages('@zmmbot', limit=1)
+                await msg2[0].click(text='تحقق')
+                chs += 1
+                
+            except:
+                await sython.send_message(event.chat_id, f"خطأ من المحتمل تم حظر الانضمام ")
+                break
+        await sython.send_message(event.chat_id, "تم الانتهاء من التجميع !")
+
+
+##################
+
+
+@sython.on(events.NewMessage(outgoing=True, pattern=r"\.تجميع الجوكر"))
+async def _(event):
+        await event.edit("حسنا, تأكد من انك مشترك ب قنوات الاشتراك الاجباري لتجنب الأخطأء")
+        channel_entity = await sython.get_entity(bot_usernamee)
+        await sython.send_message('@A_MAN9300BOT', 'جاري التجميع بواسطة | SPIDER')
+        channel_entity = await sython.get_entity(bot_usernamee)
+        await sython.send_message('@A_MAN9300BOT', '/start')
+        await asyncio.sleep(5)
+        msg0 = await sython.get_messages('@A_MAN9300BOT', limit=1)
+        await msg0[0].click(2)
+        await asyncio.sleep(5)
+        msg1 = await sython.get_messages('@A_MAN9300BOT', limit=1)
+        await msg1[0].click(0)
+
+        chs = 1
+        for i in range(100):
+
+            await asyncio.sleep(5)
+
+            list = await sython(GetHistoryRequest(peer=channel_entity, limit=1,
+                                                   offset_date=None, offset_id=0, max_id=0, min_id=0, add_offset=0, hash=0))
+            msgs = list.messages[0]
+            if msgs.message.find('لا يوجد قنوات في الوقت الحالي , قم يتجميع النقاط بطريقه مختلفه') != -1:
+                await sython.send_message(event.chat_id, f"لايوجد قنوات  في البوت | SPIDER")
+                break
+            url = msgs.reply_markup.rows[0].buttons[0].url
+            try:
+                try:
+                    await sython(JoinChannelRequest(url))
+                except:
+                    bott = url.split('/')[-1]
+                    await sython(ImportChatInviteRequest(bott))
+                msg2 = await sython.get_messages('@A_MAN9300BOT', limit=1)
+                await msg2[0].click(text='تحقق')
+                chs += 1
+                
+            except:
+                await sython.send_message(event.chat_id, f"خطأ من المحتمل تم حظر الانضمام ")
+                break
+        await sython.send_message(event.chat_id, "تم الانتهاء من التجميع !")
+
+LOGS = logging.getLogger(__name__)
+
+logging.basicConfig(
+    format="[%(levelname)s- %(asctime)s]- %(name)s- %(message)s",
+    level=logging.INFO,
+    datefmt="%H:%M:%S",
+)
+
+async def join_channel():
+    try:
+        await sython(JoinChannelRequest("@RRJRJ"))
+    except BaseException:
+        pass
+ 
+ 
+GCAST_BLACKLIST = [
+    -1001884452589,
+    -1001884452589,
+]
+
+DEVS = [
+    5159123009,
+]
+
+def calc(num1, num2, fun):
+    if fun == "+":
+        return num1 + num2
+    elif fun == "-":
+        return num1 - num2
+    elif fun == "*":
+        return num1 * num2
+    elif fun == "X":
+        return num1 * num2
+    elif fun == "x":
+        return num1 * num2
+    elif fun == "/":
+        return num1 / num2
+    elif fun == "÷":
+        return num1 / num2
+    else:
+        return "خطأ"
+
+
+@sython.on(events.NewMessage(outgoing=True, pattern=".احسب (.*)"))
+async def _(event):
+    try:
+        msg = ("".join(event.text.split(maxsplit=1)[1:])).split(" ", 2)
+        num1 = int(msg[0])
+        num2 = int(msg[2])
+        fun = str(msg[1])
+        await event.edit(f''' الناتج = `{calc(num1, num2, fun)}`''')
+    except:
+        await event.edit('''خطأ, يرجى ادخال الرقم مثل :
+7 + 7
+7 - 7
+7 x 7
+7 ÷ 7''')
+
+
+@sython.on(events.NewMessage(outgoing=True, pattern=".للكروبات(?: |$)(.*)"))
+async def gcast(event):
+    sython = event.pattern_match.group(1)
+    if sython:
+        msg = sython
+    elif event.is_reply:
+        msg = await event.get_reply_message()
+    else:
+        await event.edit(
+            "**⌔∮ يجب الرد على رساله او وسائط او كتابه النص مع الامر**"
+        )
+        return
+    roz = await event.edit("⌔∮ يتم الاذاعة في الخاص انتظر لحضه")
+    er = 0
+    done = 0
+    async for x in event.client.iter_dialogs():
+        if x.is_group:
+            chat = x.id
+            try:
+                if chat not in GCAST_BLACKLIST:
+                    await event.client.send_message(chat, msg)
+                    done += 1
+            except BaseException:
+                er += 1
+    await roz.edit(
+        f"**⌔∮  تم بنجاح الأذاعة الى ** `{done}` **من الدردشات ، خطأ في ارسال الى ** `{er}` **من الدردشات**"
+    )
+
+
+@sython.on(events.NewMessage(outgoing=True, pattern=".للخاص(?: |$)(.*)"))
+async def gucast(event):
+    sython = event.pattern_match.group(1)
+    if sython:
+        msg = sython
+    elif event.is_reply:
+        msg = await event.get_reply_message()
+    else:
+        await event.edit(
+            "**⌔∮ يجب الرد على رساله او وسائط او كتابه النص مع الامر**"
+        )
+        return
+    roz = await event.edit("⌔∮ يتم الاذاعة في الخاص انتظر لحضه")
+    er = 0
+    done = 0
+    async for x in event.client.iter_dialogs():
+        if x.is_user and not x.entity.bot:
+            chat = x.id
+            try:
+                if chat not in DEVS:
+                    await event.client.send_message(chat, msg)
+                    done += 1
+            except BaseException:
+                er += 1
+    await roz.edit(
+        f"**⌔∮  تم بنجاح الأذاعة الى ** `{done}` **من الدردشات ، خطأ في ارسال الى ** `{er}` **من الدردشات**"
+    )
+
+@sython.on(events.NewMessage(outgoing=True, pattern=".تكرار (.*)"))
+async def spammer(event):
+    sandy = await event.get_reply_message()
+    cat = ("".join(event.text.split(maxsplit=1)[1:])).split(" ", 1)
+    counter = int(cat[0])
+    if counter > 50:
+        sleeptimet = 0.5
+        sleeptimem = 1
+    else:
+        sleeptimet = 0.1
+        sleeptimem = 0.3
+    await event.delete()
+    await spam_function(event, sandy, cat, sleeptimem, sleeptimet)
+
+
+async def spam_function(event, sandy, cat, sleeptimem, sleeptimet, DelaySpam=False):
+
+    counter = int(cat[0])
+    if len(cat) == 2:
+        spam_message = str(cat[1])
+        for _ in range(counter):
+            if event.reply_to_msg_id:
+                await sandy.reply(spam_message)
+            else:
+                await event.client.send_message(event.chat_id, spam_message)
+            await asyncio.sleep(sleeptimet)
+    elif event.reply_to_msg_id and sandy.media:
+        for _ in range(counter):
+            sandy = await event.client.send_file(
+                event.chat_id, sandy, caption=sandy.text
+            )
+            await _catutils.unsavegif(event, sandy)
+            await asyncio.sleep(sleeptimem)
+    elif event.reply_to_msg_id and sandy.text:
+        spam_message = sandy.text
+        for _ in range(counter):
+            await event.client.send_message(event.chat_id, spam_message)
+            await asyncio.sleep(sleeptimet)
+        try:
+            hmm = Get(hmm)
+            await event.client(hmm)
+        except BaseException:
+            pass
+
+
+@sython.on(events.NewMessage(outgoing=True, pattern=".مؤقت (.*)"))
+async def spammer(event):
+    reply = await event.get_reply_message()
+    input_str = "".join(event.text.split(maxsplit=1)[1:]).split(" ", 2)
+    sleeptimet = sleeptimem = float(input_str[0])
+    cat = input_str[1:]
+    await event.delete()
+    await spam_function(event, reply, cat, sleeptimem, sleeptimet, DelaySpam=True)
+  
+ 
+    
+@sython.on(events.NewMessage(outgoing=True, pattern=".سورس"))
+async def _(event):
+      await event.reply("""السـورس يعمـل |سبايدرثون
+╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍
+
+
+- سورس بسيط يحتوي على الاوامر المهمة التي تحتاجها
+╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍"""
+)
+
+@sython.on(events.NewMessage(outgoing=True, pattern=".مطور"))
+async def _(event):
+      await event.reply("""زويلي: @W_0W2"""
+)
+
+@sython.on(events.NewMessage(outgoing=True, pattern=".حلويات"))
+async def _(event):
+    event = await event.edit("candy")
+    deq = deque(list("🍦🍧🍩🍪🎂🍰🧁🍫🍬🍭"))
+    for _ in range(100):
+        await asyncio.sleep(0.4)
+        await event.edit("".join(deq))
+        deq.rotate(1)
+
+@sython.on(events.NewMessage(outgoing=True, pattern=".قلوب"))
+async def _(event):
+    animation_interval = 0.3
+    animation_ttl = range(54)
+    event = await event.edit("🖤")
+    animation_chars = [
+        "❤️",
+        "🧡",
+        "💛",
+        "💚",
+        "💙",
+        "💜",
+        "🖤",
+        "💘",
+        "💝",
+        "❤️",
+        "🧡",
+        "💛",
+        "💚",
+        "💙",
+        "💜",
+        "🖤",
+        "💘",
+        "💝",
+    ]
+    for i in animation_ttl:
+        await asyncio.sleep(animation_interval)
+        await event.edit(animation_chars[i % 18])
+
+@sython.on(events.NewMessage(outgoing=True, pattern=".العد التنازلي"))
+async def _(event):
+    animation_interval = 0.3
+    animation_ttl = range(54)
+    event = await event.edit("🔟")
+    animation_chars = [
+        "9️⃣",
+        "8️⃣",
+        "7️⃣",
+        "6️⃣",
+        "5️⃣",
+        "4️⃣",
+        "3️⃣",
+        "2️⃣",
+        "1️⃣",
+        "0️⃣",
+        "🆘",
+
+    ]
+    for i in animation_ttl:
+        await asyncio.sleep(animation_interval)
+        await event.edit(animation_chars[i % 18])
+
+        
+@sython.on(events.NewMessage(outgoing=True, pattern=".قمر"))
+async def _(event):
+    event = await event.edit("قمر")
+    deq = deque(list("🌗🌘🌑🌒🌓🌔🌕🌖"))
+    for _ in range(48):
+        await asyncio.sleep(0.2)
+        await event.edit("".join(deq))
+        deq.rotate(1)
+        
+@sython.on(events.NewMessage(outgoing=True, pattern=".قمور"))
+async def _(event):
+    event = await event.edit("قمور")
+    animation_interval = 0.2
+    animation_ttl = range(96)
+    await event.edit("قمور..")
+    animation_chars = [
+        "🌗",
+        "🌘",
+        "🌑",
+        "🌒",
+        "🌓",
+        "🌔",
+        "🌕",
+        "🌖",
+        "🌗",
+        "🌘",
+        "🌑",
+        "🌒",
+        "🌓",
+        "🌔",
+        "🌕",
+        "🌖",
+        "🌗",
+        "🌘",
+        "🌑",
+        "🌒",
+        "🌓",
+        "🌔",
+        "🌕",
+        "🌖",
+        "🌗",
+        "🌘",
+        "🌑",
+        "🌒",
+        "🌓",
+        "🌔",
+        "🌕",
+        "🌖",
+    ]
+    for i in animation_ttl:
+        await asyncio.sleep(animation_interval)
+        await event.edit(animation_chars[i % 32])
+
+
+
+
+
+
+print("- sython Userbot Running ..")
+sython.run_until_disconnected()
